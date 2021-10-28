@@ -100,6 +100,16 @@ namespace internal {
 			}
 			return true;
 		}
+		static bool evalErrorNoThrow(cudaError err, const char* file, const int line)
+		{
+			if (cudaSuccess != err) {
+				std::string msg = format("cudaSafeCall() failed at %s:%i : %s\n",
+					file, line, cudaGetErrorString(err));
+				CUMAT_LOG_SEVERE(msg);
+				return false;
+			}
+			return true;
+		}
 	public:
 		static void cudaSafeCall(cudaError err, const char *file, const int line)
 		{
@@ -109,6 +119,17 @@ namespace internal {
 			err = cudaDeviceSynchronize();
 			evalError(err, file, line);
 	#endif
+		}
+
+		static bool cudaSafeCallNoThrow(cudaError err, const char* file, const int line)
+		{
+			if (!evalErrorNoThrow(err, file, line)) return false;
+#if CUMAT_VERBOSE_ERROR_CHECKING==1
+			//insert a device-sync
+			err = cudaDeviceSynchronize();
+			if (!evalError(err, file, line)) return false;
+#endif
+			return true;
 		}
 
 		static void cudaCheckError(const char *file, const int line)
@@ -125,10 +146,18 @@ namespace internal {
 	};
 
 /**
- * \brief Tests if the cuda library call wrapped inside the bracets was executed successfully, aka returned cudaSuccess
+ * \brief Tests if the cuda library call wrapped inside the bracets was executed successfully, aka returned cudaSuccess.
+ * Throws an cuMat::cuda_error if unsuccessfull
  * \param err the error code
  */
 #define CUMAT_SAFE_CALL( err ) CUMAT_NAMESPACE internal::ErrorHelpers::cudaSafeCall( err, __FILE__, __LINE__ )
+
+ /**
+* \brief Tests if the cuda library call wrapped inside the bracets was executed successfully, aka returned cudaSuccess
+* Returns false iff unsuccessfull
+* \param err the error code
+*/
+#define CUMAT_SAFE_CALL_NO_THROW( err ) CUMAT_NAMESPACE internal::ErrorHelpers::cudaSafeCallNoThrow( err, __FILE__, __LINE__ )
 /**
  * \brief Issue this after kernel launches to check for errors in the kernel.
  */
