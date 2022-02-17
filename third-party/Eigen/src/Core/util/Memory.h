@@ -103,7 +103,9 @@ EIGEN_DEVICE_FUNC inline void* handmade_aligned_malloc(std::size_t size, std::si
 #if defined(EIGEN_HIP_DEVICE_COMPILE)
   void *original = ::malloc(size+alignment);
 #else
-  void *original = std::malloc(size+alignment);
+  //@Sebastian
+  //void *original = std::malloc(size+alignment);
+  void* original = ::malloc(size + alignment);
 #endif
   
   if (original == 0) return 0;
@@ -119,7 +121,9 @@ EIGEN_DEVICE_FUNC inline void handmade_aligned_free(void *ptr)
 #if defined(EIGEN_HIP_DEVICE_COMPILE)
     ::free(*(reinterpret_cast<void**>(ptr) - 1));
 #else
-    std::free(*(reinterpret_cast<void**>(ptr) - 1));
+    //@Sebastian
+    //std::free(*(reinterpret_cast<void**>(ptr) - 1));
+    ::free(*(reinterpret_cast<void**>(ptr) - 1));
 #endif
   }
 }
@@ -186,7 +190,9 @@ EIGEN_DEVICE_FUNC inline void* aligned_malloc(std::size_t size)
     #if defined(EIGEN_HIP_DEVICE_COMPILE)
     result = ::malloc(size);
     #else
-    result = std::malloc(size);
+    //@Sebastian
+    //result = std::malloc(size);
+    result = ::malloc(size);
     #endif
 
     #if EIGEN_DEFAULT_ALIGN_BYTES==16
@@ -210,7 +216,9 @@ EIGEN_DEVICE_FUNC inline void aligned_free(void *ptr)
     #if defined(EIGEN_HIP_DEVICE_COMPILE)
     ::free(ptr);
     #else
-    std::free(ptr);
+    //@Sebastian
+    //std::free(ptr);
+    ::free(ptr);
     #endif
 
   #else
@@ -259,7 +267,9 @@ template<> EIGEN_DEVICE_FUNC inline void* conditional_aligned_malloc<false>(std:
   #if defined(EIGEN_HIP_DEVICE_COMPILE)
   void *result = ::malloc(size);
   #else
-  void *result = std::malloc(size);
+  //@Sebastian
+  //void *result = std::malloc(size);
+  void* result = ::malloc(size);
   #endif
 
   if(!result && size)
@@ -278,7 +288,9 @@ template<> EIGEN_DEVICE_FUNC inline void conditional_aligned_free<false>(void *p
   #if defined(EIGEN_HIP_DEVICE_COMPILE)
   ::free(ptr);
   #else
-  std::free(ptr);
+  //@Sebastian
+  //std::free(ptr);
+  ::free(ptr);
   #endif
 }
 
