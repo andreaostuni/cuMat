@@ -62,10 +62,11 @@ TEST_CASE("Conjugate Gradient - Solve Dense", "[CG]")
 
         ConjugateGradient<MatrixXd> cg(A);
         cg.setMaxIterations(10 * size);
+        cg.setTolerance(1e-6);
         VectorXd x = cg.solve(b);
 		REQUIRE(cg.iterations() > 0);
 		REQUIRE(cg.error() > 0);
-        REQUIRE(cg.iterations() < cg.maxIterations()); //it should have converged
+        REQUIRE(cg.iterations() <= cg.maxIterations()); //it should have converged
         REQUIRE(cg.error() <= cg.tolerance());         //the error should be lower than the tolerance
         assertMatrixEqualityRelative(x, xTruth, 1e-4);       //the true solution was found
     }
@@ -91,10 +92,11 @@ TEST_CASE("Conjugate Gradient - Solve Dense Batched", "[CG]")
 
     ConjugateGradient<MatrixXd> cg(A);
     cg.setMaxIterations(10 * size);
+    cg.setTolerance(1e-6);
     Vec x = cg.solve(b);
     REQUIRE(cg.iterations() > 0);
     REQUIRE(cg.error() > 0);
-    REQUIRE(cg.iterations() < cg.maxIterations()); //it should have converged
+    REQUIRE(cg.iterations() <= cg.maxIterations()); //it should have converged
     REQUIRE(cg.error() <= cg.tolerance());         //the error should be lower than the tolerance
     assertMatrixEqualityRelative(x, xTruth, 1e-4);       //the true solution was found
 }

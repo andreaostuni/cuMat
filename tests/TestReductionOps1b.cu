@@ -2,10 +2,10 @@
 #include <vector>
 
 #define CUMAT_UNITTESTS_LAST_REDUCTION 1
-namespace cuMat
-{
-	std::string LastReductionAlgorithm;
-}
+// namespace cuMat
+// {
+// 	std::string LastReductionAlgorithm;
+// }
 
 #include <cuMat/Core>
 #include "Utils.h"
@@ -14,24 +14,24 @@ namespace cuMat
 
 using namespace cuMat;
 
-BMatrixXiR createTestMatrix()
-{
-    int data[2][4][3] = {
-        {
-            { 1, 2, 3 },
-            { 4, 5, 6 },
-            { 7, 8, 9 },
-            { 10,11,12 }
-        },
-        {
-            { 13,14,15 },
-            { 16,17,18 },
-            { 19,20,21 },
-            { 22,23,24 }
-        }
-    };
-    return BMatrixXiR::fromArray(data);
-}
+extern BMatrixXiR createTestMatrix();
+// {
+//     int data[2][4][3] = {
+//         {
+//             { 1, 2, 3 },
+//             { 4, 5, 6 },
+//             { 7, 8, 9 },
+//             { 10,11,12 }
+//         },
+//         {
+//             { 13,14,15 },
+//             { 16,17,18 },
+//             { 19,20,21 },
+//             { 22,23,24 }
+//         }
+//     };
+//     return BMatrixXiR::fromArray(data);
+// }
 
 TEST_CASE("raw_reduce_none_prod", "[reduce]")
 {

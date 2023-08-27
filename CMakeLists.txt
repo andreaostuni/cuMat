@@ -19,6 +19,8 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+find_package(Eigen3 REQUIRED)
+
 # Eigen is not required by default,
 # but the tests depend on it -> use bundled Eigen for tests
 
@@ -29,7 +31,7 @@ include_directories(${CMAKE_SOURCE_DIR} ${CUDA_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+LIST(APPEND CUDA_NVCC_FLAGS "-std=c++17")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(third-party)

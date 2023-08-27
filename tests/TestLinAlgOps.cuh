@@ -4,7 +4,8 @@
 #include <cuMat/src/EigenInteropHelpers.h>
 #include <vector>
 
-#include <third-party/Eigen/Dense>
+// #include <third-party/Eigen/Dense>
+#include <Eigen/Dense>
 
 #include "Utils.h"
 

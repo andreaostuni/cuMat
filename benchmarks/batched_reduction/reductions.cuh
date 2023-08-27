@@ -2,8 +2,10 @@
 #define REDUCTIONS_BENCHMARK
 
 #include <cuMat/Core>
-#include <third-party/cub/device/device_reduce.cuh>
-#include <third-party/cub/block/block_reduce.cuh>
+// #include <third-party/cub/device/device_reduce.cuh>
+// #include <third-party/cub/block/block_reduce.cuh>
+#include <cub/device/device_reduce.cuh>
+#include <cub/block/block_reduce.cuh>
 
 CUMAT_NAMESPACE_BEGIN
 

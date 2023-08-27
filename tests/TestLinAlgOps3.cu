@@ -1,5 +1,5 @@
 #include "TestLinAlgOps.cuh"
-TEST_CASE("dense lin-alg 2", "[Dense]")
+TEST_CASE("dense lin-alg 3", "[Dense]")
 {
 	SECTION("5x5")
 	{

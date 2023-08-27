@@ -91,15 +91,19 @@ void benchmark_cuBlas(
 		cuMat::VectorXf x = cuMat::VectorXf::fromEigen(ex);
 		cuMat::VectorXf r(matrixSize);
 
-		cusparseMatDescr_t matDescr = 0;
+		cusparseSpMatDescr_t matDescr = 0;
+		cusparseDnVecDescr_t vecXDescr = 0;
+		cusparseDnVecDescr_t vecYDescr = 0;
 		const int* JAdata = JA.data();
 		const int* IAdata = IA.data();
 		const float* Adata = data.data();
 		const float* xdata = x.data();
 		float* rdata = r.data();
-		CUSPARSE_SAFE_CALL(cusparseCreateMatDescr(&matDescr));
-		cusparseSetMatType(matDescr, CUSPARSE_MATRIX_TYPE_GENERAL);
-		cusparseSetMatIndexBase(matDescr, CUSPARSE_INDEX_BASE_ZERO);
+		CUSPARSE_SAFE_CALL(cusparseCreateCsr(&matDescr, matrixSize, matrixSize, nnz, (void *)JAdata, (void *)IAdata, (void *)Adata,
+			CUSPARSE_INDEX_32I, CUSPARSE_INDEX_32I, CUSPARSE_INDEX_BASE_ZERO, CUDA_R_32F));
+
+		CUSPARSE_SAFE_CALL(cusparseCreateDnVec(&vecXDescr, matrixSize, (void *)xdata, CUDA_R_32F));
+		CUSPARSE_SAFE_CALL(cusparseCreateDnVec(&vecYDescr, matrixSize, (void *)rdata, CUDA_R_32F));
 
 		float alpha = 1;
 		float beta = 0;
@@ -116,8 +120,7 @@ void benchmark_cuBlas(
             //pure cuBLAS + CUDA:
 
 			for (int i = 0; i < subruns; ++i) {
-				CUSPARSE_SAFE_CALL(cusparseScsrmv(handle, CUSPARSE_OPERATION_NON_TRANSPOSE, matrixSize, matrixSize, nnz, &alpha, matDescr,
-					Adata, JAdata, IAdata, xdata, &beta, rdata));
+				CUSPARSE_SAFE_CALL(cusparseSpMV(handle, CUSPARSE_OPERATION_NON_TRANSPOSE, &alpha, matDescr, vecXDescr, &beta, vecXDescr, CUDA_R_32F, CUSPARSE_MV_ALG_DEFAULT, nullptr));
 			}
 
             cudaDeviceSynchronize();
