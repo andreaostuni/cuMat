@@ -75,7 +75,7 @@ if(CUMAT_SEPARATE_TESTS)
         # Somehow, the CI does not understand the include paths if using target_link_libraries
         #  -> I have to set the globally in the root folder
         #target_link_libraries(${testname} Eigen3)
-        #target_link_libraries(${testname} Catch)
+        target_link_libraries(${testname}  Catch2::Catch2)
         #target_link_libraries(${testname} cuMat)
         
         target_link_libraries(${testname} ${CUDA_LIBRARIES} ${CUDA_cusolver_LIBRARY})
@@ -90,7 +90,7 @@ else(CUMAT_SEPARATE_TESTS)
     # Somehow, the CI does not understand the include paths if using target_link_libraries
     #  -> I have to set the globally in the root folder
     #target_link_libraries(cuMat_tests Eigen3)
-    #target_link_libraries(cuMat_tests Catch)
+    target_link_libraries(cuMat_tests  Catch2::Catch2)
     #target_link_libraries(cuMat_tests cuMat)
     
     target_link_libraries(cuMat_tests ${CUDA_LIBRARIES} ${CUDA_cusolver_LIBRARY})

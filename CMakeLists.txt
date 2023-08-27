@@ -20,6 +20,7 @@ if (OPENMP_FOUND)
 endif()
 
 find_package(Eigen3 REQUIRED)
+find_package(Catch2 REQUIRED)
 
 # Eigen is not required by default,
 # but the tests depend on it -> use bundled Eigen for tests
@@ -29,12 +30,12 @@ find_package(Eigen3 REQUIRED)
 #  Hence I have to include the paths globally.
 include_directories(${CMAKE_SOURCE_DIR} ${CUDA_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/third-party)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 LIST(APPEND CUDA_NVCC_FLAGS "-std=c++17")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_subdirectory(third-party)
+# add_subdirectory(third-party)
 add_subdirectory(cuMat)
 add_subdirectory(tests)
 add_subdirectory(demos)
